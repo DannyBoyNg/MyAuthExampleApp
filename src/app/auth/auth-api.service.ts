@@ -1,0 +1,71 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import { environment } from '../../environments/environment';
+import { Token } from './auth.interfaces';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthApiService {
+
+  private api = environment.apiUrl;
+
+  constructor(
+    private http: HttpClient,
+  ) { }
+
+  login(username: string, password: string) {
+    const params = new HttpParams()
+    .set('username', username.toString())
+    .set('password', password.toString());
+    return this.http.post<Token>(`${this.api}/token`, params);
+  }
+
+  refreshAccessToken(accesToken: string, refreshToken: string) {
+    const params = new HttpParams()
+    .set('accessToken', accesToken)
+    .set('refreshToken', refreshToken);
+    return this.http.post<Token>(`${this.api}/refresh`, params);
+  }
+
+  register(username: string, email: string, password: string) {
+    const params = new HttpParams()
+    .set('username', username.toString())
+    .set('email', email.toString())
+    .set('password', password.toString());
+    return this.http.post(`${this.api}/api/user/register`, params);
+  }
+
+  confirmEmail(userId: number, token: string) {
+    return this.http.get(`${this.api}/api/user/confirmemail/${userId}/${token}`)
+  }
+
+  forgotPassword(email: string) {
+    const params = new HttpParams()
+    .set('email', email);
+    return this.http.post(`${this.api}/api/user/forgotpassword`, params);
+  }
+
+  resetPassword(userId: string, token: string, password: string, confirmPassword: string) {
+    const params = new HttpParams()
+    .set('userid', userId)
+    .set('token', token)
+    .set('password', password)
+    .set('confirmpassword', confirmPassword);
+    return this.http.post(`${this.api}/api/user/resetpassword`, params);
+  }
+
+  forgotUsername(email: string) {
+    const params = new HttpParams()
+    .set('email', email);
+    return this.http.post(`${this.api}/api/user/forgotusername`, params);
+  }
+
+  hasRole(trialId: string, role: string) {
+    const params = new HttpParams()
+    .set('trialId', trialId)
+    .set('role', role);
+    return this.http.post<boolean>(`${this.api}/api/user/hasRole`, params);
+  }
+}
