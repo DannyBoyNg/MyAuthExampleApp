@@ -1,12 +1,10 @@
 <form [formGroup]="form" (ngSubmit)="login()">
-<div class="page">
   <div class="dialog-window">
     <div class="dialog-header">
       <div class="dialog-title noselect">Log In</div>
     </div>
     <div class="dialog-content">
       <br>
-      <div class="errors">{{errors}}</div>
       <br>
       <table>
         <tr>
@@ -27,8 +25,7 @@
       <a class="link" routerLink="/register">Register new account</a>
       <a class="link" routerLink="/forgotpassword">Forgot password</a>
       <a class="link" routerLink="/forgotusername">Forgot username</a>
-      <button type="submit" [disabled]="!form.valid">Log In</button>
+      <button type="submit" [disabled]="!form.valid || loginInProgress">Log In</button>
     </div>
   </div>
-</div>
 </form>

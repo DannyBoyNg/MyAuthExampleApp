@@ -31,7 +31,7 @@
       <tr>
         <td>Confirm Password</td>
         <td>
-          <input class="formcontrol" type="password" formControlName="confirmPassword" (keyup.enter)="onSubmit()" required>
+          <input class="formcontrol" type="password" formControlName="confirmPassword" required>
         </td>
       </tr>
     </table>
@@ -39,7 +39,7 @@
   </div>
   <div class="dialog-footer">
     <a class="link" routerLink="/login">Go to login</a>
-    <button title="Enter" type="submit" [disabled]="!form.valid">Register</button>
+    <button title="Enter" type="submit" [disabled]="!form.valid || registerInProgress">Register</button>
   </div>
 </div>
 </form>

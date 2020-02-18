@@ -3,9 +3,10 @@ import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angula
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthApiService } from '../auth-api.service';
-import { Token } from '../auth.interfaces';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { finalize, tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +15,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit, AfterViewInit {
 
-  errors: string|undefined;
   form: FormGroup;
+  loginInProgress = false;
   @ViewChild('uiUsername', { static: true }) uiUsername!: ElementRef;
 
   constructor(
@@ -42,30 +43,24 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   login() {
-    this.errors = '';
+    this.loginInProgress = true;
     const form = this.form.value;
     const username = form.username;
     const password = form.password;
     this.api.login(username, password)
-      .subscribe((x: Token) => {
+      .pipe(
+        finalize(() => this.loginInProgress = false),
+        tap(token => {
           // store token
-          this.auth.setToken(x);
+          this.auth.setToken(token);
           // redirect after login
           if (this.auth.redirectUrl != null) {
             this.router.navigateByUrl(this.auth.redirectUrl);
           } else {
             this.router.navigate(['']);
           }
-        },
-        (err: HttpErrorResponse) => {
-          if (err.status === 401) {
-            setTimeout(() => this.errors = 'Credentials are invalid', 200);
-          } else if (err.status === 400) {
-            setTimeout(() => this.errors = err.error, 200);
-          } else {
-            setTimeout(() => this.errors = 'An connection error or an server error has occured', 200);
-          }
-        }
-      );
+        })
+      )
+      .subscribe();
   }
 }

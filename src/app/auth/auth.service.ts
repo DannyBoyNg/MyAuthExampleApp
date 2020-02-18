@@ -37,11 +37,9 @@ export class AuthService {
   setToken(token: Token) {
     sessionStorage.accessToken = token.accessToken;
     sessionStorage.refreshToken = token.refreshToken;
-
     const claims = this.parseJwt(token.accessToken);
-    console.log(claims);
-    // sessionStorage.username = token.username;
-    // sessionStorage.uid = token.uid;
+    sessionStorage.username = claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+    sessionStorage.uid = claims.uid;
   }
 
   logout() {

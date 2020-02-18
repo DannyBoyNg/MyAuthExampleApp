@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+    position: relative;
+    margin: 0;
+    font-family: "Segoe UI", "Helvetica Neue" !important;
+    height: 100% !important;
+}
+body {
+    border-top: solid 1px transparent;
+    margin-top: -1px !important;
+}
+/* Material ProgressBar Styles */
+.mat-progress-bar {
+    z-index: 10000 !important;
+    animation-name: show;
+    animation-duration: 1000ms;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    min-height: 4px;
+    width: 100%;
+}
+.mat-progress-bar-fill::after {
+    background-color: green !important;
+}
+@keyframes show {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+/* END: Material ProgressBar Styles */

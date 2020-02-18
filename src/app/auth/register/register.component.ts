@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DialogService } from '@dannyboyng/dialog';
 
 import { AuthApiService } from '../auth-api.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,7 @@ import { AuthApiService } from '../auth-api.service';
 })
 export class RegisterComponent implements OnInit {
 
+  registerInProgress = false;
   username: string|undefined;
   email: string|undefined;
   password: string|undefined;
@@ -49,10 +51,11 @@ export class RegisterComponent implements OnInit {
       return;
     }
     // Send to server
+    this.registerInProgress = true;
     this.api.register(data.username, data.email, data.password)
+    .pipe(finalize(() => this.registerInProgress = false))
     .subscribe(() => {
-      this.dialog.info('Your account has been created')
-      .subscribe(() => this.router.navigateByUrl('/login'));
+      this.dialog.info('Your account has been created').subscribe(() => this.router.navigateByUrl('/login'));
     });
   }
 

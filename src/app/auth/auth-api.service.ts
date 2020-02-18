@@ -38,7 +38,7 @@ export class AuthApiService {
   }
 
   confirmEmail(userId: number, token: string) {
-    return this.http.get(`${this.api}/api/user/confirmemail/${userId}/${token}`)
+    return this.http.get(`${this.api}/api/user/confirmemail/${userId}/${token}`);
   }
 
   forgotPassword(email: string) {

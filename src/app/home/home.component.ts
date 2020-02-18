@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  private apiUrl = environment.apiUrl;
+  secretMessage: Observable<string>|undefined;
+
+  constructor(private http: HttpClient, public auth: AuthService) { }
 
   ngOnInit(): void {
+    this.secretMessage = this.http.get(`${this.apiUrl}/home`, { responseType: 'text' });
   }
 
 }

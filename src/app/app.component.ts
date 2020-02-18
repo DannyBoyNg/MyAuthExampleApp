@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
+import { DialogService } from '@dannyboyng/dialog';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'myAuthExampleApp';
+
+  constructor(
+    private vcr: ViewContainerRef,
+    private dialog: DialogService
+  ) {
+    this.dialog.setViewContainerRef(this.vcr);
+  }
 }
