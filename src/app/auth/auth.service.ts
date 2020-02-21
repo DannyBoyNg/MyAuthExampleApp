@@ -34,6 +34,13 @@ export class AuthService {
     return sessionStorage.getItem('uid');
   }
 
+  getAllClaims() {
+    const accessToken = this.getAccessToken();
+    if (accessToken == null) return null;
+    console.log(this.parseJwt(accessToken));
+    return this.parseJwt(accessToken);
+  }
+
   setToken(token: Token) {
     sessionStorage.accessToken = token.accessToken;
     sessionStorage.refreshToken = token.refreshToken;

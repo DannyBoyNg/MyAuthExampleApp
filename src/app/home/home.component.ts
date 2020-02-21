@@ -13,11 +13,20 @@ export class HomeComponent implements OnInit {
 
   private apiUrl = environment.apiUrl;
   secretMessage: Observable<string>|undefined;
+  claims: any;
+  expiresIn: number|undefined;
+  expiresInMin: number|undefined;
+  expiresInSec: number|undefined;
 
   constructor(private http: HttpClient, public auth: AuthService) { }
 
   ngOnInit(): void {
     this.secretMessage = this.http.get(`${this.apiUrl}/home`, { responseType: 'text' });
+    this.claims = this.auth.getAllClaims();
+    const expUnix = this.claims.exp;
+    this.expiresIn = expUnix - Math.floor(Date.now()/1000);
+    this.expiresInMin = Math.floor(this.expiresIn / 60);
+    this.expiresInSec = Math.floor(this.expiresIn % 60);
   }
 
 }
