@@ -1,5 +1,5 @@
 <h2>{{secretMessage | async}}</h2>
-<p>Your Bearer token contains the following claims:</p>
+<p>Your Access token contains the following claims:</p>
 <pre>
 <div *ngFor="let item of claims | keyvalue">
     <b>{{item.key}}:</b> {{item.value}}
