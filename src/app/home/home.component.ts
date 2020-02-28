@@ -25,8 +25,6 @@ export class HomeComponent implements OnInit {
     this.claims = this.auth.getAllClaims();
     const expUnix = this.claims.exp;
     this.expiresIn = expUnix - Math.floor(Date.now()/1000);
-    this.expiresInMin = Math.floor(this.expiresIn / 60);
-    this.expiresInSec = Math.floor(this.expiresIn % 60);
   }
 
 }

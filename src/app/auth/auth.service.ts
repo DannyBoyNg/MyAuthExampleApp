@@ -37,7 +37,6 @@ export class AuthService {
   getAllClaims() {
     const accessToken = this.getAccessToken();
     if (accessToken == null) return null;
-    console.log(this.parseJwt(accessToken));
     return this.parseJwt(accessToken);
   }
 

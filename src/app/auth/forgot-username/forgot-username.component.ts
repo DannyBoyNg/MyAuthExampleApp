@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DialogService } from '@dannyboyng/dialog';
@@ -35,7 +35,7 @@ export class ForgotUsernameComponent implements OnInit {
     const data = this.form.value;
     this.api.forgotUsername(data.email)
     .subscribe(() => {
-      this.dialog.info('Check your mail to find out what your username is.')
+      this.dialog.info('Your username is sent to your email address.')
       .subscribe(() => this.router.navigateByUrl('/login'));
     });
   }
