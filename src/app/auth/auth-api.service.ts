@@ -61,11 +61,4 @@ export class AuthApiService {
     .set('email', email);
     return this.http.post(`${this.api}/api/user/forgotusername`, params);
   }
-
-  hasRole(trialId: string, role: string) {
-    const params = new HttpParams()
-    .set('trialId', trialId)
-    .set('role', role);
-    return this.http.post<boolean>(`${this.api}/api/user/hasRole`, params);
-  }
 }
