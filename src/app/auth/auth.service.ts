@@ -10,6 +10,12 @@ import { tap, catchError } from 'rxjs/operators';
 })
 export class AuthService {
 
+  readonly CLAIM_NAME = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+  readonly ACCESS_TOKEN = 'accessToken';
+  readonly REFRESH_TOKEN = 'refreshToken';
+  readonly USERNAME = 'username';
+  readonly UID = 'uid';
+
   redirectUrl: string|undefined;
   private IsAdmin: boolean|undefined;
 
@@ -19,48 +25,46 @@ export class AuthService {
   ) { }
 
   getAccessToken() {
-    return sessionStorage.getItem('accessToken');
+    return sessionStorage.getItem(this.ACCESS_TOKEN);
   }
 
   getRefreshToken() {
-    return sessionStorage.getItem('refreshToken');
+    return sessionStorage.getItem(this.REFRESH_TOKEN);
   }
 
   getUserName() {
-    return sessionStorage.getItem('username');
+    return sessionStorage.getItem(this.USERNAME);
   }
 
   getUid() {
-    return sessionStorage.getItem('uid');
+    return sessionStorage.getItem(this.UID);
   }
 
   getAllClaims() {
     const accessToken = this.getAccessToken();
-    if (accessToken == null) return null;
-    return this.parseJwt(accessToken);
+    return accessToken == null ? null : this.parseJwt(accessToken);
   }
 
   setToken(token: Token) {
     sessionStorage.accessToken = token.accessToken;
     sessionStorage.refreshToken = token.refreshToken;
     const claims = this.parseJwt(token.accessToken);
-    sessionStorage.username = claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+    sessionStorage.username = claims[this.CLAIM_NAME];
     sessionStorage.uid = claims.uid;
   }
 
   logout() {
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('accessToken');
-    sessionStorage.removeItem('refreshToken');
-    sessionStorage.removeItem('uid');
+    sessionStorage.removeItem(this.ACCESS_TOKEN);
+    sessionStorage.removeItem(this.REFRESH_TOKEN);
+    sessionStorage.removeItem(this.USERNAME);
+    sessionStorage.removeItem(this.UID);
     this.IsAdmin = undefined;
     this.router.navigate(['login']);
   }
 
   isLoggedIn(): boolean {
     const token: string = sessionStorage.accessToken;
-    if (token) { return true; }
-    return false;
+    return !!token;
   }
 
   isAdmin(): boolean {
