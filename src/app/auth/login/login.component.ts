@@ -1,12 +1,10 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthApiService } from '../auth-api.service';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { finalize, tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',

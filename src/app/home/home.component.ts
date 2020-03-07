@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     this.secretMessage = this.http.get(`${this.apiUrl}/home`, { responseType: 'text' });
     this.claims = this.auth.getAllClaims();
     const expUnix = this.claims.exp;
-    this.expiresIn = expUnix - Math.floor(Date.now()/1000);
+    this.expiresIn = expUnix - Math.floor(Date.now() / 1000);
   }
 
 }

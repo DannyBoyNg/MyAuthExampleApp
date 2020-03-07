@@ -10,7 +10,7 @@ import { tap, catchError } from 'rxjs/operators';
 })
 export class AuthService {
 
-  readonly CLAIM_NAME = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+  readonly CLAIMTYPE_NAME = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
   readonly ACCESS_TOKEN = 'accessToken';
   readonly REFRESH_TOKEN = 'refreshToken';
   readonly USERNAME = 'username';
@@ -49,7 +49,7 @@ export class AuthService {
     sessionStorage.accessToken = token.accessToken;
     sessionStorage.refreshToken = token.refreshToken;
     const claims = this.parseJwt(token.accessToken);
-    sessionStorage.username = claims[this.CLAIM_NAME];
+    sessionStorage.username = claims[this.CLAIMTYPE_NAME];
     sessionStorage.uid = claims.uid;
   }
 
