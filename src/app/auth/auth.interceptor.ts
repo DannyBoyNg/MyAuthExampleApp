@@ -3,7 +3,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse
 import { Observable, BehaviorSubject, throwError, of, TimeoutError } from 'rxjs';
 
 import { AuthService } from './auth.service';
-import { catchError, switchMap, filter, take } from 'rxjs/operators';
+import { catchError, switchMap, filter, take, finalize } from 'rxjs/operators';
 import { Token } from './auth.interfaces';
 import { DialogService } from '@dannyboyng/dialog';
 
@@ -48,8 +48,8 @@ export class AuthInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       this.mostRecentTokenSource.next(null);
       return this.auth.refreshAccessToken(accessToken, refreshToken).pipe(
+        finalize(() => this.isRefreshing = false),
         switchMap(token => {
-          this.isRefreshing = false;
           this.mostRecentTokenSource.next(token);
           return next.handle(this.addTokenToRequest(request, token.accessToken));
         }));
